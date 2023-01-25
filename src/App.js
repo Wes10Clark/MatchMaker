@@ -1,23 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import React, { useState } from "react";
+import LoveForm from "./components/LoveForm";
+import CouplesList from "./components/CouplesList";
 
 function App() {
+  const [couples, setCouples] = useState([]);
+
+  const addCouple = (fname, lname) => {
+    let id = 1;
+    if (couples.length > 0) {
+      id = couples[0].id + 1;
+    }
+    let couple = { id: id, fname: fname, lname: lname };
+    let newCouples = [couple, ...couples];
+    setCouples(newCouples);
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1 className="text-center mt-4">
+        Is It A <span className="text-danger">Match</span>
+      </h1>
+      <LoveForm addCouple={addCouple} />
+      {couples.map((couple) => {
+        return <CouplesList couple={couple} key={couple.id} />;
+      })}
     </div>
   );
 }
